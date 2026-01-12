@@ -1,4 +1,4 @@
-name: Backup Vulnerability-Wiki-PoC (simple)
+name: Backup Vulnerability-Wiki-PoC (clone + remove .git)
 
 on:
   schedule:
@@ -16,12 +16,14 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          submodules: false
 
-      - name: Mirror public repo into subdir
+      - name: Mirror repo into subdir (remove inner .git)
         run: |
           rm -rf mirror/Vulnerability-Wiki-PoC
           mkdir -p mirror
           git clone --depth=1 https://github.com/SourByte05/Vulnerability-Wiki-PoC.git mirror/Vulnerability-Wiki-PoC
+          rm -rf mirror/Vulnerability-Wiki-PoC/.git
 
       - name: Commit and push
         run: |
